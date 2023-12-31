@@ -1,4 +1,5 @@
 using API.Data;
+using API.Middleware;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<StoreContext>( opt => 
+builder.Services.AddDbContext<StoreContext>(opt =>
 {
     opt.UseSqlite(connectionString);
 });
@@ -18,7 +19,7 @@ builder.Services.AddDbContext<StoreContext>( opt =>
 builder.Services.AddCors();
 
 var app = builder.Build();
-
+app.UseMiddleware<ExceptionMiddleware>();
 // Configure the HTTP request pipeline.  order is important here
 if (app.Environment.IsDevelopment())
 {
@@ -28,7 +29,8 @@ if (app.Environment.IsDevelopment())
 
 //app.UseHttpsRedirection();
 
-app.UseCors(opt => {
+app.UseCors(opt =>
+{
     opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
 });
 
