@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Header from "./Header";
 import {
   Container,
@@ -9,21 +9,36 @@ import {
 import { Outlet } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getCookie } from "../util/util";
 import LoadingComponent from "./LoadingComponent";
 import { useAppDispatch, useAppSelector } from "../store/configureStore";
-import { loadBasketItemsAsync } from "../../features/basket/basketSlice";
+import { fetchBasketAsync } from "../../features/basket/basketSlice";
+import { fetchCurrentUser } from "../../features/account/accountSlice";
 
 function App() {
   const dispatch = useAppDispatch();
   const { status } = useAppSelector((state) => state.basket);
 
-  useEffect(() => {
-    const buyerId = getCookie("buyerId");
-    if (buyerId) {
-      dispatch(loadBasketItemsAsync());
+  const initApp = useCallback(async () => {
+    try {
+      await dispatch(fetchCurrentUser());
+      await dispatch(fetchBasketAsync());
+    } catch (error) {
+      console.log(error);
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    initApp();
+  }, [initApp]);
+
+  // useEffect(() => {
+  //   try {
+  //     dispatch(fetchCurrentUser());
+  //     dispatch(fetchBasketAsync());
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }, [dispatch]);
 
   const [darkMode, setDarkmode] = useState(false);
   const paletteType = darkMode ? "dark" : "light";

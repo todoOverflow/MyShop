@@ -16,6 +16,8 @@ export default function ProductSearch() {
     <TextField
       label="Search Products"
       variant="outlined"
+      name="search bar"
+      id="search bar"
       fullWidth
       value={searchTerm}
       onChange={(event: any) => {
