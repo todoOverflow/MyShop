@@ -10,13 +10,13 @@ import { Outlet } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingComponent from "./LoadingComponent";
-import { useAppDispatch, useAppSelector } from "../store/configureStore";
+import { useAppDispatch } from "../store/configureStore";
 import { fetchBasketAsync } from "../../features/basket/basketSlice";
 import { fetchCurrentUser } from "../../features/account/accountSlice";
 
 function App() {
   const dispatch = useAppDispatch();
-  const { status } = useAppSelector((state) => state.basket);
+  const [loading, setLoading] = useState(true);
 
   const initApp = useCallback(async () => {
     try {
@@ -28,17 +28,8 @@ function App() {
   }, [dispatch]);
 
   useEffect(() => {
-    initApp();
+    initApp().then(() => setLoading(false));
   }, [initApp]);
-
-  // useEffect(() => {
-  //   try {
-  //     dispatch(fetchCurrentUser());
-  //     dispatch(fetchBasketAsync());
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }, [dispatch]);
 
   const [darkMode, setDarkmode] = useState(false);
   const paletteType = darkMode ? "dark" : "light";
@@ -54,8 +45,7 @@ function App() {
   function handleThemeChange() {
     setDarkmode(!darkMode);
   }
-  if (status === "pendingLoadBasketItems")
-    return <LoadingComponent message="Loading Basket..." />;
+  if (loading) return <LoadingComponent message="App initiasing..." />;
   return (
     <ThemeProvider theme={theme}>
       <ToastContainer position="bottom-right" hideProgressBar theme="colored" />

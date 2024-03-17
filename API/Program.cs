@@ -54,7 +54,7 @@ builder.Services.AddDbContext<StoreContext>(opt =>
 
 builder.Services.AddCors();
 builder.Services.AddIdentityCore<User>(opt => opt.User.RequireUniqueEmail = true)
-    .AddRoles<IdentityRole>()
+    .AddRoles<Role>()
     .AddEntityFrameworkStores<StoreContext>();
 
 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTSettings:TokenKey"]));
