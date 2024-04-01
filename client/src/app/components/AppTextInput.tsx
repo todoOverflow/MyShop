@@ -6,7 +6,7 @@ interface Props extends UseControllerProps {
 }
 
 export default function AppTextInput(props: Props) {
-  const { field, fieldState } = useController({ ...props, defaultValue: "" });
+  const { field, fieldState } = useController({ ...props });
   return (
     <TextField
       {...props}
