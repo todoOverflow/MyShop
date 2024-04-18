@@ -1,0 +1,25 @@
+# fly.toml app configuration file generated for myshop-app on 2024-04-18T15:37:25+10:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'myshop-app'
+primary_region = 'syd'
+
+[build]
+  image = 'todooverflow/myshop:latest'
+
+[env]
+  ASPNETCORE_URLS="http://+:8080"
+  StripeSettings__Publishablekey="pk_test_51OvzN7I6FIVbzUEQZWmS512wkI8TfQjHDAxw56kz4CTpvE5gHHXBpY0ABR0qXQ0QCH1lAY9v6K9fWQSzMtzF5dAl00dpUoClme"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  size = 'shared-cpu-1x'

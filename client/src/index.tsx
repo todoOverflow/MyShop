@@ -9,11 +9,14 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./app/router/Router";
 import { Provider } from "react-redux";
 import { store } from "./app/store/configureStore";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import React from "react";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  //<React.StrictMode>
-  <Provider store={store}>
-    <RouterProvider router={router} />
-  </Provider>
-  //</React.StrictMode>
+  <React.StrictMode>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  </React.StrictMode>
 );
